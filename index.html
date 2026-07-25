@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YouTube Video Downloader - Fast 4K/HD Video & MP3 Converter</title>
+  <meta name="description" content="Paste any YouTube video or Shorts link and download in 1080p, 720p, 480p or MP3 audio format instantly.">
+  
+  <!-- Privacy & Security Headers -->
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="Cross-Origin-Resource-Policy" content="same-origin">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23FF0000'><path d='M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z'/></svg>">
+  
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Sticky Header -->
+  <header class="app-header">
+    <div class="nav-container">
+      <div class="brand-logo" id="brand-logo-btn">
+        <div class="brand-icon" style="background: #FF0000; color: #FFF;">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+          </svg>
+        </div>
+        <span>YouTube Downloader</span>
+      </div>
+
+      <nav>
+        <ul class="nav-links">
+          <li>
+            <button class="nav-tab active" data-tab="home-tab">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+              </svg>
+              <span>Home</span>
+            </button>
+          </li>
+          <li>
+            <button class="nav-tab" data-tab="downloads-tab">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+              </svg>
+              <span>Downloads</span>
+              <span class="badge-count" id="history-badge-count">0</span>
+            </button>
+          </li>
+          <li>
+            <button class="nav-tab" data-tab="settings-tab">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                <path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/>
+              </svg>
+              <span>Settings</span>
+            </button>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <button class="theme-toggle-btn" id="theme-toggle-btn" title="Toggle Dark/Light Mode" aria-label="Toggle Theme">
+          <svg class="icon-moon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+            <path d="M12.3 2a10 10 0 0 0 9.7 12.3 10 10 0 1 1-9.7-12.3z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main App Shell -->
+  <main class="main-content">
+    
+    <!-- Hero Section -->
+    <section id="home-tab" class="tab-pane active">
+      <div class="hero-section">
+        <div class="hero-badge">
+          <span class="hero-pulse-dot"></span>
+          <span>Fast & Free YouTube Downloader</span>
+        </div>
+        <h1 class="hero-title">Download YouTube Videos <span class="title-highlight">in 4K & MP3</span></h1>
+        <p class="hero-subtitle">Convert YouTube videos, Shorts, and music into high quality MP4 and MP3 audio instantly.</p>
+        
+        <div class="hero-tags-bar">
+          <span class="hero-tag">⚡ 4K / 1080p Ultra HD</span>
+          <span class="hero-tag">🎵 High Quality MP3</span>
+          <span class="hero-tag">📱 Shorts Supported</span>
+        </div>
+      </div>
+
+      <!-- Main Input Card -->
+      <div class="downloader-box" id="downloader-box">
+        <form id="url-form">
+          <div class="input-group">
+            <div class="input-field-wrapper">
+              <span class="input-icon">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="#FF0000">
+                  <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                </svg>
+              </span>
+              <input type="url" id="url-input" class="url-input" placeholder="Paste YouTube link here..." autocomplete="off" required>
+              
+              <button type="button" id="paste-btn" class="input-action-btn" title="Paste from clipboard">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                  <path d="M19 2h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm7 17H5V4h2v3h10V4h2v15z"/>
+                </svg>
+                <span>Paste</span>
+              </button>
+
+              <button type="button" id="clear-btn" class="input-action-btn" title="Clear input text" style="display: none;">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                  <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                </svg>
+              </button>
+            </div>
+
+            <button type="submit" id="fetch-btn" class="btn-primary">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+              </svg>
+              <span>Fetch Video</span>
+            </button>
+          </div>
+        </form>
+
+        <div class="drag-drop-hint">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+            <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/>
+          </svg>
+          <span>Drag & drop any YouTube video link or Shorts link for instant conversion</span>
+        </div>
+      </div>
+
+
+
+      <!-- Skeleton Loading UI -->
+      <div class="skeleton-card" id="skeleton-card">
+        <div class="skeleton-thumb skeleton-shimmer"></div>
+        <div class="skeleton-meta">
+          <div class="skeleton-line h-title skeleton-shimmer"></div>
+          <div class="skeleton-line h-sub skeleton-shimmer"></div>
+          <div class="skeleton-line h-btn skeleton-shimmer"></div>
+          <div class="skeleton-line h-btn skeleton-shimmer"></div>
+        </div>
+      </div>
+
+      <!-- Video Preview Card with Dynamic Player Container -->
+      <div class="video-preview-card" id="video-preview-card">
+        <div class="preview-grid">
+          
+          <!-- Dynamic Player Column -->
+          <div class="preview-thumb-wrapper">
+            <div id="preview-player-container" style="width: 100%; aspect-ratio: 16/9; border-radius: var(--radius-md); overflow: hidden; background: #000; position: relative;">
+              <!-- Dynamic Video / Iframe element inserted by app.js -->
+            </div>
+            
+            <div id="preview-platform-badge" class="platform-badge badge-youtube">YouTube</div>
+
+            <div style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.825rem; color: var(--color-success); margin-top: 0.6rem; font-weight: 600;">
+              <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--color-success); box-shadow:0 0 8px var(--color-success);"></span>
+              <span>Live Stream Preview Ready</span>
+            </div>
+          </div>
+
+          <!-- Video Details Column -->
+          <div class="preview-details">
+            <div>
+              <h2 id="preview-title" class="preview-title">Video Title</h2>
+              
+              <div class="preview-meta-stats">
+                <span class="meta-stat-item">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                  </svg>
+                  <span id="preview-author">Author</span>
+                </span>
+                <span class="meta-stat-item">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                    <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+                  </svg>
+                  <span id="preview-duration">00:00</span>
+                </span>
+                <span class="meta-stat-item">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                    <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+                  </svg>
+                  <span id="preview-views">0 views</span>
+                </span>
+              </div>
+            </div>
+
+            <!-- Download Formats Matrix -->
+            <div>
+              <div class="qualities-title">Available Download Formats:</div>
+              <div id="qualities-list" class="qualities-list"></div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Active Download Progress Widget -->
+      <div class="active-downloads-card" id="active-downloads-card">
+        <div class="downloads-widget-title">
+          <h3>⚡ Active Downloads</h3>
+          <span id="active-count-label" style="font-size: 0.85rem; color: var(--text-muted);">1 task in progress</span>
+        </div>
+
+        <div id="active-progress-container"></div>
+      </div>
+
+      <!-- Supported YouTube Features Section -->
+      <div class="platforms-section">
+        <h2 class="section-heading">Supported YouTube Features & Formats</h2>
+        <p class="section-subheading">Save YouTube videos, Shorts, and MP3 music seamlessly in high resolution</p>
+
+        <div class="platforms-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
+          <div class="platform-card">
+            <div class="platform-icon-large" style="background: #FF0000">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            </div>
+            <span class="platform-name">1080p / 4K Video</span>
+          </div>
+
+          <div class="platform-card">
+            <div class="platform-icon-large" style="background: linear-gradient(135deg, #FF0000, #E60000)">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+            </div>
+            <span class="platform-name">YouTube MP3 Audio</span>
+          </div>
+
+          <div class="platform-card">
+            <div class="platform-icon-large" style="background: #CC0000">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M17.77 10.32l-1.2-.5L18 9.06c1.84-.96 2.53-3.23 1.56-5.07s-3.24-2.53-5.07-1.56L6 6.5C4.34 7.37 3.4 9.17 3.63 11c.24 1.83 1.63 3.29 3.46 3.67l1.2.5L7 15.94c-1.84.96-2.53 3.23-1.56 5.07 1.07 1.84 3.34 2.43 5.07 1.56l8.43-4.07c1.66-.87 2.6-2.67 2.37-4.5-.24-1.83-1.63-3.29-3.46-3.67zM10 14.5v-5l4.5 2.5-4.5 2.5z"/></svg>
+            </div>
+            <span class="platform-name">YouTube Shorts</span>
+          </div>
+
+          <div class="platform-card">
+            <div class="platform-icon-large" style="background: #990000">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42C17.99 7.86 19 9.81 19 12c0 3.87-3.13 7-7 7s-7-3.13-7-7c0-2.19 1.01-4.14 2.58-5.42L6.17 5.17C4.23 6.82 3 9.26 3 12c0 4.97 4.03 9 9 9s9-4.03 9-9c0-2.74-1.23-5.18-3.17-6.83z"/></svg>
+            </div>
+            <span class="platform-name">Fast Stream Converter</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DOWNLOADS HISTORY TAB PANE -->
+    <section id="downloads-tab" class="tab-pane">
+      <div class="hero-section" style="text-align: left; margin-bottom: 1.5rem;">
+        <h2>Download History</h2>
+        <p class="hero-subtitle" style="margin: 0;">Manage your downloaded videos, re-download, or clear local history</p>
+      </div>
+
+      <!-- Controls & Filter Bar -->
+      <div class="history-controls">
+        <div class="search-wrapper">
+          <svg class="search-icon-pos" viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+            <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+          </svg>
+          <input type="text" id="history-search" class="search-box-input" placeholder="Search title or platform...">
+        </div>
+
+        <div style="display: flex; gap: 0.75rem; align-items: center;">
+          <select id="history-format-filter" class="filter-select">
+            <option value="all">All Formats</option>
+            <option value="1080p">1080p Full HD</option>
+            <option value="720p">720p HD</option>
+            <option value="480p">480p SD</option>
+            <option value="mp3">Audio MP3</option>
+          </select>
+
+          <button id="clear-history-btn" class="btn-danger-outline">
+            Clear All History
+          </button>
+        </div>
+      </div>
+
+      <!-- Storage Summary Bar -->
+      <div class="history-stats-bar">
+        <div>
+          <span>Total Downloads: <strong id="stat-total-count" style="color: var(--text-primary);">0</strong></span>
+        </div>
+        <div>
+          <span>Total Downloaded Size: <strong id="stat-total-size" style="color: var(--accent-solid);">0 MB</strong></span>
+        </div>
+      </div>
+
+      <!-- History List -->
+      <div id="history-list-container" class="history-list"></div>
+
+      <!-- Empty History Placeholder -->
+      <div id="empty-history-state" class="empty-history-state" style="display: none;">
+        <svg class="empty-icon" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+        </svg>
+        <h3>No download history found</h3>
+        <p>Videos you download will appear here automatically.</p>
+      </div>
+    </section>
+
+    <!-- SETTINGS TAB PANE -->
+    <section id="settings-tab" class="tab-pane">
+      <div class="hero-section" style="text-align: left; margin-bottom: 1.5rem;">
+        <h2>App Preferences & Settings</h2>
+        <p class="hero-subtitle" style="margin: 0;">Customize your downloading experience and theme settings</p>
+      </div>
+
+      <div class="settings-container">
+        
+        <!-- General Preferences -->
+        <div class="settings-card">
+          <h3 class="settings-group-title">Download Preferences</h3>
+          
+          <div class="setting-row">
+            <div>
+              <div class="setting-label-title">Default Download Quality</div>
+              <div class="setting-label-desc">Automatically pre-select format when fetching metadata</div>
+            </div>
+            <select id="setting-default-quality" class="filter-select">
+              <option value="1080p">1080p Full HD</option>
+              <option value="720p">720p HD</option>
+              <option value="480p">480p SD</option>
+              <option value="MP3">Audio Only (MP3)</option>
+            </select>
+          </div>
+
+          <div class="setting-row">
+            <div>
+              <div class="setting-label-title">Auto-Detect Clipboard Links</div>
+              <div class="setting-label-desc">Suggest pasting when copied video link is detected</div>
+            </div>
+            <label class="switch-toggle">
+              <input type="checkbox" id="setting-auto-paste">
+              <span class="slider-round"></span>
+            </label>
+          </div>
+
+          <div class="setting-row">
+            <div>
+              <div class="setting-label-title">Download Speed Simulation</div>
+              <div class="setting-label-desc">Adjust mock stream download rate</div>
+            </div>
+            <select id="setting-speed" class="filter-select">
+              <option value="fast">Fast (8 MB/s)</option>
+              <option value="normal">Normal (4 MB/s)</option>
+              <option value="slow">Slow Demo (1 MB/s)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Appearance Preferences -->
+        <div class="settings-card">
+          <h3 class="settings-group-title">Appearance & UI</h3>
+          
+          <div class="setting-row">
+            <div>
+              <div class="setting-label-title">Theme Mode</div>
+              <div class="setting-label-desc">Choose between dark glassmorphism and clean light mode</div>
+            </div>
+            <select id="setting-theme" class="filter-select">
+              <option value="dark">Dark Mode (Default)</option>
+              <option value="light">Light Mode</option>
+            </select>
+          </div>
+
+          <div class="setting-row">
+            <div>
+              <div class="setting-label-title">Toast Notifications</div>
+              <div class="setting-label-desc">Display visual popup alerts for download events</div>
+            </div>
+            <label class="switch-toggle">
+              <input type="checkbox" id="setting-notifications" checked>
+              <span class="slider-round"></span>
+            </label>
+          </div>
+        </div>
+
+        <!-- System & Cache -->
+        <div class="settings-card">
+          <h3 class="settings-group-title">Storage & Reset</h3>
+          
+          <div class="setting-row">
+            <div>
+              <div class="setting-label-title">Reset Settings</div>
+              <div class="setting-label-desc">Restore app settings to default configuration</div>
+            </div>
+            <button id="reset-settings-btn" class="btn-danger-outline">
+              Reset Settings
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- App Footer -->
+  <footer class="app-footer">
+    <div style="max-width: 1000px; margin: 0 auto;">
+      <p style="margin-bottom: 0.5rem; font-weight: 600;">YouTube Downloader &copy; 2026</p>
+      <p style="color: var(--text-muted); font-size: 0.8rem;">
+        Legal Notice: YouTube Downloader only supports downloading publicly available or user-owned YouTube content. Please respect copyright laws and YouTube Terms of Service.
+      </p>
+    </div>
+  </footer>
+
+  <!-- Application Entry Point JS -->
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
