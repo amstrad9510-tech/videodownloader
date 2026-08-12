@@ -2,8 +2,16 @@
   "version": 2,
   "rewrites": [
     {
+      "source": "/api/info",
+      "destination": "/api/index.py?endpoint=info"
+    },
+    {
+      "source": "/api/download",
+      "destination": "/api/index.py?endpoint=download"
+    },
+    {
       "source": "/api/(.*)",
-      "destination": "/api/index.py"
+      "destination": "/api/index.py?endpoint=$1"
     }
   ]
 }

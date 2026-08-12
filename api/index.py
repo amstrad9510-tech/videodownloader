@@ -288,7 +288,13 @@ class handler(BaseHTTPRequestHandler):
         parsed_url = urllib.parse.urlparse(self.path)
         query = urllib.parse.parse_qs(parsed_url.query)
 
-        if parsed_url.path == '/api/info':
+        endpoint = query.get('endpoint', [''])[0].lower()
+        raw_path = (self.headers.get('x-matched-path', '') or self.headers.get('x-forwarded-uri', '') or parsed_url.path).lower()
+
+        is_info = 'info' in raw_path or endpoint == 'info' or parsed_url.path.endswith('/info')
+        is_download = 'download' in raw_path or endpoint == 'download' or parsed_url.path.endswith('/download')
+
+        if is_info:
             video_url = query.get('url', [''])[0]
             if not video_url:
                 self.send_json_error("Missing 'url' parameter", 400)
@@ -297,7 +303,7 @@ class handler(BaseHTTPRequestHandler):
             self.send_json_response(info)
             return
 
-        elif parsed_url.path == '/api/download':
+        elif is_download:
             video_url = query.get('url', [''])[0]
             fmt = query.get('format', ['best'])[0].lower()
             if not video_url:
@@ -309,4 +315,9 @@ class handler(BaseHTTPRequestHandler):
                 self.send_json_error(f"Download failed: {str(e)}", 500)
             return
 
-        self.send_json_error("Not found", 404)
+        elif query.get('url'):
+            info = self.extract_info(query.get('url')[0])
+            self.send_json_response(info)
+            return
+
+        self.send_json_error(f"Endpoint not found: {self.path}", 404)
