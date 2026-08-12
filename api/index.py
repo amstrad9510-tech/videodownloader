@@ -291,6 +291,44 @@ class handler(BaseHTTPRequestHandler):
         endpoint = query.get('endpoint', [''])[0].lower()
         raw_path = (self.headers.get('x-matched-path', '') or self.headers.get('x-forwarded-uri', '') or parsed_url.path).lower()
 
+        # 1. Handle Homepage / Root path / index.html
+        if parsed_url.path in ['/', '/index.html'] or raw_path in ['/', '/index.html']:
+            root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+            index_path = os.path.join(root_dir, 'index.html')
+            if os.path.exists(index_path):
+                with open(index_path, 'rb') as f:
+                    content = f.read()
+                self.send_response(200)
+                self.send_header('Content-Type', 'text/html; charset=utf-8')
+                self.send_header('Content-Length', str(len(content)))
+                self.end_headers()
+                self.wfile.write(content)
+                return
+
+        # 2. Handle Static Files (CSS, JS, images, SVG, etc.)
+        root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        rel_path = parsed_url.path.lstrip('/')
+        possible_static_path = os.path.join(root_dir, rel_path)
+        if os.path.exists(possible_static_path) and os.path.isfile(possible_static_path):
+            content_type = 'text/plain'
+            if rel_path.endswith('.css'): content_type = 'text/css'
+            elif rel_path.endswith('.js'): content_type = 'application/javascript'
+            elif rel_path.endswith('.html'): content_type = 'text/html'
+            elif rel_path.endswith('.svg'): content_type = 'image/svg+xml'
+            elif rel_path.endswith('.png'): content_type = 'image/png'
+            elif rel_path.endswith('.jpg') or rel_path.endswith('.jpeg'): content_type = 'image/jpeg'
+            elif rel_path.endswith('.json'): content_type = 'application/json'
+
+            with open(possible_static_path, 'rb') as f:
+                content = f.read()
+            self.send_response(200)
+            self.send_header('Content-Type', content_type)
+            self.send_header('Content-Length', str(len(content)))
+            self.end_headers()
+            self.wfile.write(content)
+            return
+
+        # 3. Handle API routes
         is_info = 'info' in raw_path or endpoint == 'info' or parsed_url.path.endswith('/info')
         is_download = 'download' in raw_path or endpoint == 'download' or parsed_url.path.endswith('/download')
 
